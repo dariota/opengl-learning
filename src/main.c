@@ -1,12 +1,3 @@
-/* Copyright (c) Mark J. Kilgard, 1997. */
-
-/* This program is freely distributable without licensing fees
- and is provided without guarantee or warrantee expressed or
- implied. This program is -not- in the public domain. */
-
-/* This program was requested by Patrick Earl; hopefully someone else
- will write the equivalent Direct3D immediate mode program. */
-
 #include <GL/freeglut_std.h>
 #include <GL/gl.h>
 #include <GL/glu.h>
@@ -20,7 +11,7 @@
 // perform n physics updates, up to a cap, forces a slowdown to catch up if
 // there's lag
 
-//Alternatively: Event based update model per object, more useful for sims
+// Alternatively: Event based update model per object, more useful for sims
 
 struct camera *c;
 float colour = 1.0f;
@@ -132,6 +123,7 @@ void processNormalKeys(unsigned char key, int x, int y) {
 	}
 }
 
+// these keys occupy the same space as the ascii chars
 void processSpecialKeys(int key, int x, int y) {
 	switch (key) {
 		case GLUT_KEY_LEFT:
