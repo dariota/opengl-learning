@@ -29,3 +29,7 @@ struct camera *defaultCamera(void) {
 
 	return myCamera;
 }
+
+void freeCamera(struct camera *c) {
+	free(c);
+}

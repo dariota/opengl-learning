@@ -14,6 +14,7 @@
 
 struct boundingBox {
 	// xyz of top left + height, width, depth for all cuboids forming the object
+	int length;
 	float *positions[6];
 };
 
@@ -24,7 +25,7 @@ struct collision {
 	int instantEnd;
 };
 
-struct boundingBox *newBoundingBox(float positions[][6]);
+struct boundingBox *newBoundingBox(float *positions[6], int length);
 struct collision *interact(struct collision *c, struct boundingBox *a,
                           struct boundingBox *b);
 struct boundingBox *copyOfBoundingBox(struct boundingBox *b);

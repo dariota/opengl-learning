@@ -10,10 +10,17 @@
 
 #include "entity.h"
 #include "bounds.h"
+#include "camera.h"
 
 struct drawInfo *newDrawInfo(void) {
 	return NULL;
 }
+
+struct drawInfo *copyOfDrawInfo(struct drawInfo *d) {
+	struct drawInfo *copy = newDrawInfo();
+	return copy;
+}
+
 void freeDrawInfo(struct drawInfo *d) {
 	// it's funny because if you ask me what kind of rendering/world this is,
 	// the next line is my answer
@@ -57,6 +64,7 @@ struct player *newPlayer(struct entity *e, struct camera *c) {
 	return p;
 }
 
+// special keys should have their highest bit set
 void pushButton(struct player *p, int button) {
 	if (!p || !button) return;
 
@@ -66,6 +74,7 @@ void pushButton(struct player *p, int button) {
 	p->buttons[i] = button;
 }
 
+// special keys should have their highest bit set
 void releaseButton(struct player *p, int button) {
 	if (!p || !button) return;
 
@@ -81,5 +90,11 @@ void update(struct player *p, int iterations) {
 }
 
 void freePlayer(struct player *p) {
-	;
+	if (!p) return;
+
+	freeBoundingBox(p->e.bBox);
+	freeDrawInfo(p->e.draw);
+	freeCamera(p->c);
+	free(p);
+
 }

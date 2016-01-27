@@ -20,5 +20,6 @@ struct camera {
 };
 
 struct camera *defaultCamera(void);
+void freeCamera(struct camera *c);
 
 #endif
