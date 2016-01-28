@@ -32,10 +32,18 @@ struct entity *newEntity(struct boundingBox *b, struct drawInfo *d) {
 	struct entity *e = malloc(sizeof(struct entity));
 	if (!e) return NULL;
 
+	e->needsUpdate = 0;
 	e->bBox = b;
 	e->draw = d;
 
 	return e;
+}
+
+void update(struct entity *e) {
+	if (e->needsUpdate > 0) {
+		--(e->needsUpdate);
+		e->update(e);
+	}
 }
 
 void freeEntity(struct entity *e) {

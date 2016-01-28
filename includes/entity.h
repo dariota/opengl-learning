@@ -15,8 +15,10 @@ struct drawInfo {
 };
 
 struct entity {
+	int needsUpdate;
 	struct boundingBox *bBox;
 	struct drawInfo *draw;
+	void (*update)(struct entity*);
 };
 
 struct player {
@@ -30,6 +32,7 @@ struct drawInfo *copyOfDrawInfo(struct drawInfo *d);
 void freeDrawInfo(struct drawInfo *d);
 
 struct entity *newEntity(struct boundingBox *b, struct drawInfo *d);
+void update(struct entity *e);
 void freeEntity(struct entity *e);
 
 struct player *newPlayer(struct entity *e, struct camera *c);
