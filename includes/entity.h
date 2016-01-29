@@ -38,7 +38,7 @@ void freeEntity(struct entity *e);
 struct player *newPlayer(struct entity *e, struct camera *c);
 void pushButton(struct player *p, int button);
 void releaseButton(struct player *p, int button);
-void update(struct player *p, int iterations);
+void updatePlayer(struct player *p, int iterations);
 void freePlayer(struct player *p);
 
 #endif
