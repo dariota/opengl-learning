@@ -107,11 +107,8 @@ void releaseSpecialKey(int key, int x, int y) {
 }
 
 int main(int argc, char **argv) {
-	fprintf(stderr, "hi main");
 	struct entity *e = newEntity(newBoundingBox(NULL, 0), newDrawInfo());
-	fprintf(stderr, "entity made");
 	p = newPlayer(e, defaultCamera());
-	fprintf(stderr, "player made");
 	p->c = c = defaultCamera();
 
 	glutInit(&argc, argv);
@@ -119,7 +116,6 @@ int main(int argc, char **argv) {
 	glutInitWindowSize(320, 320);
 	glutInitDisplayMode(GLUT_RGBA | GLUT_DOUBLE | GLUT_DEPTH);
 	glutCreateWindow("Butts");
-	fprintf(stderr, "glut done");
 
 	glutDisplayFunc(renderScene);
 	glutReshapeFunc(changeSize);
@@ -128,7 +124,6 @@ int main(int argc, char **argv) {
 	glutKeyboardUpFunc(releaseKeys);
 	glutSpecialFunc(processSpecialKeys);
 	glutSpecialUpFunc(releaseSpecialKey);
-	fprintf(stderr, "keys done");
 
 	glEnable(GL_DEPTH_TEST);
 	initPhysics();

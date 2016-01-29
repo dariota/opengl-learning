@@ -9,7 +9,6 @@
 #include <stdlib.h>
 #include <stddef.h>
 #include <math.h>
-#include <stdio.h>
 
 #include "entity.h"
 #include "bounds.h"
@@ -67,9 +66,7 @@ struct player *newPlayer(struct entity *e, struct camera *c) {
 	if (!p) return NULL;
 
 	p->e.bBox = copyOfBoundingBox(e->bBox);
-	fprintf(stderr, "copied box");
 	p->e.draw = copyOfDrawInfo(e->draw);
-	fprintf(stderr, "copied draw");
 
 	p->c = c;
 
