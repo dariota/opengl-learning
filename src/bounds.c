@@ -6,12 +6,14 @@
  */
 
 #include <stddef.h>
+#include <stdlib.h>
 
 #include "bounds.h"
 
 struct boundingBox *newBoundingBox(float *positions[6], int length) {
 	struct boundingBox *b = malloc(sizeof(struct boundingBox));
 
+	b->length = length;
 	for (int i = 0; i < length; i++) {
 		for (int j = 0; j < 6; j++) {
 			b->positions[i][j] = positions[i][j];
