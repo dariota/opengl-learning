@@ -5,24 +5,30 @@
  *      Author: Dario Tavares Antunes
  */
 
-#include <time.h>
+#include <Windows.h>
 #include <stddef.h>
+#include <stdio.h>
 
-const long nanosPerTick = 10000000;
-const long a;
+#include "entity.h"
+
+LARGE_INTEGER ticksPerUpdate;
+LARGE_INTEGER *lastUpdate = NULL;
 const int maxUpdates = 5;
 int missedUpdates = 0;
-struct timespec lastUpdate = NULL;
 
-void update(struct entity *es, int length) {
-	struct timespec currentTime;
-	clock_gettime(CLOCK_MONOTONIC, &currentTime);
-	long delta = lastUpdate == NULL ?
-	             nanosPerTick :
-	             currentTime.tv_nsec + (currentTime.tv_sec - lastUpdate.tv_sec) * 1000000000
-                 - lastUpdate.tv_sec;
-	if (lastUpdate == NULL || delta >= nanosPerTick) {
-		int iterations = delta / nanosPerTick + missedUpdates;
+void initPhysics(void) {
+	QueryPerformanceFrequency(&ticksPerUpdate);
+	ticksPerUpdate.QuadPart /= 100;
+}
+
+void updatePhysics(struct entity **es, int length) {
+	LARGE_INTEGER currentTime;
+	QueryPerformanceCounter(&currentTime);
+	long long delta = lastUpdate == NULL ?
+	             ticksPerUpdate.QuadPart :
+				 (currentTime.QuadPart - lastUpdate->QuadPart);
+	if (lastUpdate == NULL || delta >= ticksPerUpdate.QuadPart) {
+		int iterations = delta / ticksPerUpdate.QuadPart + missedUpdates;
 		if (iterations > maxUpdates) {
 			missedUpdates += iterations - maxUpdates;
 			iterations = maxUpdates;
@@ -32,6 +38,6 @@ void update(struct entity *es, int length) {
 			es[i]->update(es[i]);
 		}
 
-		lastUpdate = clock_gettime(CLOCK_MONOTONIC, &currentTime);
+		lastUpdate->QuadPart = currentTime.QuadPart;
 	}
 }
