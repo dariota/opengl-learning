@@ -6,13 +6,12 @@
 
 #include "camera.h"
 #include "mathsUtils.h"
-
-//TODO: fixed step physics, delta time graphics?
-// perform n physics updates, up to a cap, forces a slowdown to catch up if
-// there's lag
+#include "entity.h"
+#include "physics.h"
 
 // Alternatively: Event based update model per object, more useful for sims
 
+struct player *p;
 struct camera *c;
 float colour = 1.0f;
 float up[] = {0, 1, 0};
@@ -91,86 +90,52 @@ void changeSize(int width, int height) {
 	glMatrixMode(GL_MODELVIEW);
 }
 
-void processNormalKeys(unsigned char key, int x, int y) {
-	float fraction = 0.2f;
-	float ortho[3];
-
-	if (key == 'a' || key == 'e') {
-		crossProduct(&ortho[0], c->look, up);
-	}
-
-	switch (key) {
-		case 'a':
-			c->xyz[VEC_X] -= ortho[VEC_X] * fraction;
-			c->xyz[VEC_Y] -= ortho[VEC_Y] * fraction;
-			c->xyz[VEC_Z] -= ortho[VEC_Z] * fraction;
-			break;
-		case 'e':
-			c->xyz[VEC_X] += ortho[VEC_X] * fraction;
-			c->xyz[VEC_Y] += ortho[VEC_Y] * fraction;
-			c->xyz[VEC_Z] += ortho[VEC_Z] * fraction;
-			break;
-		case ',':
-			c->xyz[VEC_X] += c->look[VEC_X] * fraction;
-			c->xyz[VEC_Y] += c->look[VEC_Y] * fraction;
-			c->xyz[VEC_Z] += c->look[VEC_Z] * fraction;
-			break;
-		case 'o':
-			c->xyz[VEC_X] -= c->look[VEC_X] * fraction;
-			c->xyz[VEC_Y] -= c->look[VEC_Y] * fraction;
-			c->xyz[VEC_Z] -= c->look[VEC_Z] * fraction;
-			break;
-	}
+void processKeys(unsigned char key, int x, int y) {
+	pushButton(p, key);
 }
 
-// these keys occupy the same space as the ascii chars
+void releaseKeys(unsigned char key, int x, int y) {
+	releaseButton(p, key);
+}
+
 void processSpecialKeys(int key, int x, int y) {
-	switch (key) {
-		case GLUT_KEY_LEFT:
-			c->angleH -= 0.01f;
-			c->look[VEC_X] = sin(c->angleH);
-			c->look[VEC_Z] = -cos(c->angleH);
-			break;
-		case GLUT_KEY_RIGHT:
-			c->angleH += 0.01f;
-			c->look[VEC_X] = sin(c->angleH);
-			c->look[VEC_Z] = -cos(c->angleH);
-			break;
-		case GLUT_KEY_UP:
-			; // an empty statement is required  after a label as a declaration
-			  // is not a statement
-			float maxAngle = PI * (80.0/180);
-			c->angleV = c->angleV >= maxAngle ? maxAngle : c->angleV + 0.01;
-			c->look[VEC_Y] = sin(c->angleV);
-			break;
-		case GLUT_KEY_DOWN:
-			;
-			float minAngle = PI * (-80.0/180);
-			c->angleV = c->angleV <= minAngle ? minAngle : c->angleV - 0.01;
-			c->look[VEC_Y] = sin(c->angleV);
-			break;
-	}
+	pushButton(p, -key);
+}
+
+void releaseSpecialKey(int key, int x, int y) {
+	releaseButton(p, -key);
 }
 
 int main(int argc, char **argv) {
-	c = defaultCamera();
+	fprintf(stderr, "hi main");
+	struct entity *e = newEntity(newBoundingBox(NULL, 0), newDrawInfo());
+	fprintf(stderr, "entity made");
+	p = newPlayer(e, defaultCamera());
+	fprintf(stderr, "player made");
+	p->c = c = defaultCamera();
 
 	glutInit(&argc, argv);
 	glutInitWindowPosition(100, 100);
 	glutInitWindowSize(320, 320);
 	glutInitDisplayMode(GLUT_RGBA | GLUT_DOUBLE | GLUT_DEPTH);
 	glutCreateWindow("Butts");
+	fprintf(stderr, "glut done");
 
 	glutDisplayFunc(renderScene);
 	glutReshapeFunc(changeSize);
-	glutKeyboardFunc(processNormalKeys);
+	glutIgnoreKeyRepeat(1);
+	glutKeyboardFunc(processKeys);
+	glutKeyboardUpFunc(releaseKeys);
 	glutSpecialFunc(processSpecialKeys);
+	glutSpecialUpFunc(releaseSpecialKey);
+	fprintf(stderr, "keys done");
 
 	glEnable(GL_DEPTH_TEST);
+	initPhysics();
 
 	glutMainLoop();
 
-	free(c);
+	freePlayer(p);
 
-	return 0; /* ANSI C requires main to return int. */
+	return 0;
 }
