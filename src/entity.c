@@ -82,7 +82,7 @@ void pushButton(struct player *p, int button) {
 	if (!p || !button) return;
 
 	int i = -1;
-	while (p->buttons[++i] != 0);
+	while (p->buttons[++i] != 0 && i < 10);
 
 	p->buttons[i] = button;
 }
@@ -92,10 +92,12 @@ void releaseButton(struct player *p, int button) {
 	if (!p || !button) return;
 
 	int i = -1;
-	while (p->buttons[++i] != button);
-	p->buttons[i] = 0;
+	while (p->buttons[++i] != button && i < 10);
+	if (i < 10)
+		p->buttons[i] = 0;
 	//intentional assignment, shift buttons down until you get a zero
-	while (i + 1 < 10 && (p->buttons[i] = p->buttons[i + 1]));
+	while (i + 1 < 10 && (p->buttons[i] = p->buttons[i + 1]))
+		i++;
 }
 
 void updatePlayer(struct entity *e) {
