@@ -42,6 +42,8 @@ void drawSnowMan() {
 }
 
 void renderScene(void) {
+	updatePhysics((void *) &p, 1);
+
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 	glLoadIdentity();
@@ -120,8 +122,10 @@ int main(int argc, char **argv) {
 	glutDisplayFunc(renderScene);
 	glutReshapeFunc(changeSize);
 	glutIgnoreKeyRepeat(1);
+
 	glutKeyboardFunc(processKeys);
 	glutKeyboardUpFunc(releaseKeys);
+
 	glutSpecialFunc(processSpecialKeys);
 	glutSpecialUpFunc(releaseSpecialKey);
 

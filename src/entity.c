@@ -67,6 +67,7 @@ struct player *newPlayer(struct entity *e, struct camera *c) {
 
 	p->e.bBox = copyOfBoundingBox(e->bBox);
 	p->e.draw = copyOfDrawInfo(e->draw);
+	p->e.update = updatePlayer;
 
 	p->c = c;
 
