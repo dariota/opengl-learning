@@ -15,7 +15,7 @@
 #include "camera.h"
 #include "mathsutils.h"
 
-const float moveUnit = 0.2f;
+const float moveUnit = 0.1f;
 
 struct drawInfo *newDrawInfo(void) {
 	return NULL;
@@ -98,7 +98,9 @@ void releaseButton(struct player *p, int button) {
 	while (i + 1 < 10 && (p->buttons[i] = p->buttons[i + 1]));
 }
 
-void updatePlayer(struct player *p, int iterations) {
+void updatePlayer(struct entity *e) {
+	struct player *p = (void *) e;
+
 	int i = -1;
 	while (p->buttons[++i] != 0) {
 		struct camera *c = p->c;
