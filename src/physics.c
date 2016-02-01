@@ -12,22 +12,23 @@
 #include "entity.h"
 
 LARGE_INTEGER ticksPerUpdate;
-LARGE_INTEGER *lastUpdate = NULL;
+LARGE_INTEGER lastUpdate;
 const int maxUpdates = 5;
 int missedUpdates = 0;
 
 void initPhysics(void) {
 	QueryPerformanceFrequency(&ticksPerUpdate);
 	ticksPerUpdate.QuadPart /= 100;
+	lastUpdate.QuadPart = 0;
 }
 
 void updatePhysics(struct entity **es, int length) {
 	LARGE_INTEGER currentTime;
 	QueryPerformanceCounter(&currentTime);
-	long long delta = lastUpdate == NULL ?
+	long long delta = lastUpdate.QuadPart == 0 ?
 	             ticksPerUpdate.QuadPart :
-				 (currentTime.QuadPart - lastUpdate->QuadPart);
-	if (lastUpdate == NULL || delta >= ticksPerUpdate.QuadPart) {
+				 (currentTime.QuadPart - lastUpdate.QuadPart);
+	if (delta >= ticksPerUpdate.QuadPart) {
 		int iterations = delta / ticksPerUpdate.QuadPart + missedUpdates;
 		if (iterations > maxUpdates) {
 			missedUpdates += iterations - maxUpdates;
@@ -38,6 +39,6 @@ void updatePhysics(struct entity **es, int length) {
 			es[i]->update(es[i]);
 		}
 
-		lastUpdate->QuadPart = currentTime.QuadPart;
+		lastUpdate.QuadPart = currentTime.QuadPart;
 	}
 }
