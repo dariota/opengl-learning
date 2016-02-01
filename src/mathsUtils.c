@@ -5,6 +5,8 @@
  *      Author: Dario Tavares Antunes
  */
 
+#include <stdio.h>
+
 #include "mathsUtils.h"
 
 void crossProduct(float *result, float *vec1, float *vec2) {
@@ -20,10 +22,11 @@ void normalise(float *vec) {
 }
 
 void normaliseLen(float *vec, int len) {
-	double max = vec[0];
+	float max = vec[0] > 0 ? vec[0] : -vec[0];
 	for (int i = 1; i < len; i++) {
-		if (max < vec[i]) {
-			max = vec[i];
+		float abs = vec[i] > 0 ? vec[i] : -vec[i];
+		if (max < abs) {
+			max = abs;
 		}
 	}
 
