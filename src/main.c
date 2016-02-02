@@ -8,6 +8,7 @@
 #include "mathsUtils.h"
 #include "entity.h"
 #include "physics.h"
+#include "player.h"
 
 // Alternatively: Event based update model per object, more useful for sims
 

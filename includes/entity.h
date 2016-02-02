@@ -35,10 +35,4 @@ struct entity *newEntity(struct boundingBox *b, struct drawInfo *d);
 void update(struct entity *e);
 void freeEntity(struct entity *e);
 
-struct player *newPlayer(struct entity *e, struct camera *c);
-void pushButton(struct player *p, int button);
-void releaseButton(struct player *p, int button);
-void updatePlayer(struct entity *e);
-void freePlayer(struct player *p);
-
 #endif
