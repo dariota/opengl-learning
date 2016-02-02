@@ -8,6 +8,12 @@
 #ifndef PLAYER_H
 #define PLAYER_H
 
+struct player {
+	struct entity e;
+	struct camera *c;
+	int buttons[10];
+};
+
 struct player *newPlayer(struct entity *e, struct camera *c);
 void pushButton(struct player *p, int button);
 void releaseButton(struct player *p, int button);

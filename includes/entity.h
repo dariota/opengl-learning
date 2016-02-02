@@ -21,12 +21,6 @@ struct entity {
 	void (*update)(struct entity*);
 };
 
-struct player {
-	struct entity e;
-	struct camera *c;
-	int buttons[10];
-};
-
 struct drawInfo *newDrawInfo(void);
 struct drawInfo *copyOfDrawInfo(struct drawInfo *d);
 void freeDrawInfo(struct drawInfo *d);
