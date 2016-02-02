@@ -11,14 +11,15 @@
 #include "bounds.h"
 
 struct drawInfo {
-	// TODO sprites or something
+	void (*draw)(void);
 };
 
 struct entity {
 	int needsUpdate;
 	struct boundingBox *bBox;
 	struct drawInfo *draw;
-	void (*update)(struct entity*);
+	int (*update)(struct entity*);
+	float xyz[3];
 };
 
 struct drawInfo *newDrawInfo(void);
@@ -26,7 +27,7 @@ struct drawInfo *copyOfDrawInfo(struct drawInfo *d);
 void freeDrawInfo(struct drawInfo *d);
 
 struct entity *newEntity(struct boundingBox *b, struct drawInfo *d);
-void update(struct entity *e);
+int update(struct entity *e);
 void freeEntity(struct entity *e);
 
 #endif

@@ -36,7 +36,9 @@ void updatePhysics(struct entity **es, int length) {
 		}
 
 		for (int i = 0; i < length; i++) {
-			es[i]->update(es[i]);
+			if (es[i]->update(es[i])) {
+				// TODO collision stuff
+			}
 		}
 
 		lastUpdate.QuadPart = currentTime.QuadPart;

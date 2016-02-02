@@ -42,10 +42,13 @@ struct entity *newEntity(struct boundingBox *b, struct drawInfo *d) {
 	return e;
 }
 
-void update(struct entity *e) {
+int update(struct entity *e) {
 	if (e->needsUpdate > 0) {
 		--(e->needsUpdate);
-		e->update(e);
+		if (e->update)
+			return e->update(e);
+		else
+			return 0;
 	}
 }
 

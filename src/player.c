@@ -57,8 +57,10 @@ void releaseButton(struct player *p, int button) {
 		i++;
 }
 
-void updatePlayer(struct entity *e) {
+int updatePlayer(struct entity *e) {
 	struct player *p = (void *) e;
+
+	int moved = 0;
 
 	int i = -1;
 	while (p->buttons[++i] != 0) {
@@ -92,6 +94,7 @@ void updatePlayer(struct entity *e) {
 		} else {
 			float ortho[3];
 			float up[] = {0.0, 1.0, 0.0};
+			moved = 1;
 			switch (p->buttons[i]) {
 			case 'a':
 				crossProduct(&ortho[0], c->look, up);
@@ -115,9 +118,14 @@ void updatePlayer(struct entity *e) {
 				c->xyz[VEC_Y] -= c->look[VEC_Y] * moveUnit;
 				c->xyz[VEC_Z] -= c->look[VEC_Z] * moveUnit;
 				break;
+			default:
+				moved = 0;
+				break;
 			}
 		}
 	}
+
+	return moved;
 }
 
 void freePlayer(struct player *p) {
