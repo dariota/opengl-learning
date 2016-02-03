@@ -33,13 +33,18 @@ void freeDrawInfo(struct drawInfo *d) {
 }
 
 
-struct entity *newEntity(struct boundingBox *b, struct drawInfo *d) {
+struct entity *newEntity(struct boundingBox *b, struct drawInfo *d,
+                         int (*update)(struct entity*), float x, float y, float z) {
 	struct entity *e = malloc(sizeof(struct entity));
 	if (!e) return NULL;
 
 	e->needsUpdate = 0;
 	e->bBox = b;
 	e->draw = d;
+	e->update = update;
+	e->xyz[VEC_X] = x;
+	e->xyz[VEC_Y] = y;
+	e->xyz[VEC_Z] = z;
 
 	return e;
 }
@@ -49,9 +54,8 @@ int update(struct entity *e) {
 		--(e->needsUpdate);
 		if (e->update)
 			return e->update(e);
-		else
-			return 0;
 	}
+	return 0;
 }
 
 void freeEntity(struct entity *e) {

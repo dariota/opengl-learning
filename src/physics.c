@@ -36,7 +36,7 @@ void updatePhysics(struct entity **es, int length) {
 		}
 
 		for (int i = 0; i < length; i++) {
-			if (es[i]->update(es[i])) {
+			if (update(es[i])) {
 				// TODO collision stuff
 			}
 		}

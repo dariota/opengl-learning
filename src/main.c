@@ -17,6 +17,8 @@ struct camera *c;
 float colour = 1.0f;
 float up[] = {0, 1, 0};
 
+struct entity *entities[39];
+
 void drawSnowMan() {
 	glColor3f(colour, 1.0f, 1.0f);
 

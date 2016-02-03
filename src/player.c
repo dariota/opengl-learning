@@ -125,6 +125,12 @@ int updatePlayer(struct entity *e) {
 		}
 	}
 
+	if (moved) {
+		for (int i = 0; i < 3; i++) {
+			p->e.xyz[i] = p->c->xyz[i];
+		}
+	}
+
 	return moved;
 }
 

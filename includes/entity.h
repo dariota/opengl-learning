@@ -26,7 +26,8 @@ struct drawInfo *newDrawInfo(void (*draw)(void));
 struct drawInfo *copyOfDrawInfo(struct drawInfo *d);
 void freeDrawInfo(struct drawInfo *d);
 
-struct entity *newEntity(struct boundingBox *b, struct drawInfo *d);
+struct entity *newEntity(struct boundingBox *b, struct drawInfo *d,
+                         int (*update)(struct entity*), float x, float y, float z);
 int update(struct entity *e);
 void freeEntity(struct entity *e);
 
