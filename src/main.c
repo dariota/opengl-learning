@@ -42,6 +42,16 @@ void drawSnowMan() {
 	glutSolidCone(0.08f,0.5f,10,2);
 }
 
+void populateSnowmen(void){
+	for (int i = 0; i < 6; i++) {
+		for (int j = 0; j < 6; j++) {
+			struct entity *e = newEntity(newBoundingBox(NULL, 0), newDrawInfo(drawSnowMan),
+			                             NULL, i * 10 - 30, 0, j * 10 - 30);
+			entities[i * 6 + j] = e;
+		}
+	}
+}
+
 void renderScene(void) {
 	updatePhysics((void *) &p, 1);
 
@@ -63,11 +73,11 @@ void renderScene(void) {
 		glVertex3f( 100.0f, 0.0f, -100.0f);
 	glEnd();
 
-	for (int i = 0; i < 6; i++) {
-		for (int j = 0; j < 6; j++) {
+	for (int i = 0; i < 39; i++) {
+		if (entities[i] && entities[i]->draw) {
 			glPushMatrix();
-			glTranslatef(i * 10 - 30, 0, j * 10 - 30);
-			drawSnowMan();
+			glTranslatef(entities[i]->xyz[VEC_X], entities[i]->xyz[VEC_Y], entities[i]->xyz[VEC_Z]);
+			entities[i]->draw->draw();
 			glPopMatrix();
 		}
 	}
@@ -110,7 +120,8 @@ void releaseSpecialKey(int key, int x, int y) {
 }
 
 int main(int argc, char **argv) {
-	struct entity *e = newEntity(newBoundingBox(NULL, 0), newDrawInfo());
+	struct entity *e = newEntity(newBoundingBox(NULL, 0), newDrawInfo(NULL),
+	                             updatePlayer, 0, 0, 0);
 	p = newPlayer(e, defaultCamera());
 	p->c = c = defaultCamera();
 

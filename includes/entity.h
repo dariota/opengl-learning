@@ -22,7 +22,7 @@ struct entity {
 	float xyz[3];
 };
 
-struct drawInfo *newDrawInfo(void);
+struct drawInfo *newDrawInfo(void (*draw)(void));
 struct drawInfo *copyOfDrawInfo(struct drawInfo *d);
 void freeDrawInfo(struct drawInfo *d);
 

@@ -15,12 +15,14 @@
 #include "camera.h"
 #include "mathsutils.h"
 
-struct drawInfo *newDrawInfo(void) {
-	return NULL;
+struct drawInfo *newDrawInfo(void (*draw)(void)) {
+	struct drawInfo *myDraw = malloc(sizeof(struct drawInfo));
+	myDraw->draw = draw;
+	return myDraw;
 }
 
 struct drawInfo *copyOfDrawInfo(struct drawInfo *d) {
-	struct drawInfo *copy = newDrawInfo();
+	struct drawInfo *copy = newDrawInfo(d->draw);
 	return copy;
 }
 
